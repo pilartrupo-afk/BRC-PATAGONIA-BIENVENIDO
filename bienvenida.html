@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRC.PATAGONIA</title>
+<style>
+  :root{
+    --deep:#152C3E;
+    --mid:#2C5470;
+    --glacier:#6FA8B5;
+    --ice:#E8EEF0;
+    --stone:#F6F5F2;
+    --ink:#1B2226;
+    --line:#D8DEE0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    background:var(--stone);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .top{
+    background:var(--deep);
+    color:white;
+    padding:38px 24px 28px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .top::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:140px;height:140px;
+    background:var(--glacier);
+    opacity:.18;
+    transform:rotate(45deg);
+  }
+  .mark{
+    width:34px;height:34px;
+    margin:0 auto 14px;
+    background:var(--glacier);
+    transform:rotate(45deg);
+    position:relative;
+  }
+  .mark::after{
+    content:"";
+    position:absolute;
+    inset:9px;
+    background:var(--deep);
+    transform:none;
+  }
+  .brand{
+    font-size:13px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--glacier);
+    margin-bottom:6px;
+  }
+  .unit{
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+  .addr{
+    font-size:13px;
+    color:#B9C9D1;
+    margin-top:6px;
+  }
+
+  .langbar{
+    display:flex;
+    background:var(--mid);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .langbtn{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:#CFE0E6;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.04em;
+    padding:13px 0;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .langbtn.active{
+    background:var(--deep);
+    color:white;
+    border-bottom-color:var(--glacier);
+  }
+
+  .wrap{
+    max-width:520px;
+    margin:0 auto;
+    padding:28px 22px 60px;
+  }
+
+  .lang-content{display:none;}
+  .lang-content.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .greeting{
+    font-size:19px;
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .sub{
+    font-size:14px;
+    color:#54636B;
+    margin-bottom:26px;
+  }
+
+  section{
+    margin-bottom:26px;
+  }
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--mid);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--glacier);
+    transform:rotate(45deg);
+    flex-shrink:0;
+  }
+  .card{
+    background:white;
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:16px 18px;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 0;
+    font-size:14.5px;
+    border-bottom:1px solid var(--line);
+  }
+  .row:last-child{border-bottom:none;}
+  .row b{font-weight:700;}
+  .row .val{text-align:right;color:#3C474D;}
+
+  .alert{
+    background:#FCEFE3;
+    border-left:3px solid #C77B3A;
+    padding:14px 16px;
+    font-size:14px;
+    border-radius:2px;
+  }
+  .alert b{display:block;margin-bottom:4px;font-size:14.5px;}
+
+  ul.plain{list-style:none;}
+  ul.plain li{
+    font-size:14.5px;
+    padding:8px 0;
+    border-bottom:1px solid var(--line);
+  }
+  ul.plain li:last-child{border-bottom:none;}
+
+  .place{
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .place:last-child{border-bottom:none;}
+  .place .name{font-weight:700;font-size:14.5px;margin-bottom:2px;}
+  .place .meta{font-size:13px;color:#5C6A71;}
+
+  .wa{
+    display:block;
+    text-align:center;
+    background:var(--deep);
+    color:white;
+    text-decoration:none;
+    font-weight:700;
+    font-size:15px;
+    padding:14px;
+    border-radius:2px;
+    margin-top:6px;
+  }
+
+  .emer{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .emer span{
+    background:var(--ice);
+    color:var(--deep);
+    font-size:13px;
+    font-weight:600;
+    padding:6px 10px;
+    border-radius:2px;
+  }
+
+  footer{
+    text-align:center;
+    font-size:12.5px;
+    color:#8694 9C;
+    color:#86949C;
+    padding-top:10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="mark"></div>
+  <div class="brand">BRC.PATAGONIA</div>
+  <div class="unit">Bienvenidos</div>
+  <div class="addr">Mitre 670, Bariloche</div>
+</div>
+
+<div class="langbar">
+  <button class="langbtn active" data-lang="es" onclick="setLang('es')">ESPAÑOL</button>
+  <button class="langbtn" data-lang="en" onclick="setLang('en')">ENGLISH</button>
+  <button class="langbtn" data-lang="pt" onclick="setLang('pt')">PORTUGUÊS</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== ESPAÑOL ===================== -->
+  <div class="lang-content active" id="es">
+    <div class="greeting">¡Bienvenidos! 🏔️</div>
+    <div class="sub">Indicaciones para que tu estadía sea más placentera.</div>
+
+    <section>
+      <div class="eyebrow">Horarios</div>
+      <div class="card">
+        <div class="row"><b>Check-in</b><span class="val">15:00 hs</span></div>
+        <div class="row"><b>Check-out</b><span class="val">10:00 hs</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">WiFi</div>
+      <div class="card">
+        <div class="row"><b>Red</b><span class="val">BrcPatagonia</span></div>
+        <div class="row"><b>Contraseña</b><span class="val">Mitre4632</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Calefacción — importante</div>
+      <div class="alert">
+        <b>⚠️ No bajar el termostato por debajo de 21°C</b>
+        La caldera es central y compartida con todo el edificio. Bajarla puede desconfigurar el sistema y afectar a otros pisos. Si tenés calor, abrí un poco la ventana — el ambiente se refresca enseguida.
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Normas del espacio</div>
+      <div class="card">
+        <ul class="plain">
+          <li>Prohibido fumar dentro del apartamento y áreas comunes. Espacio 100% libre de humo.</li>
+          <li>La basura se tira en los contenedores de la calle: Frey 100 / Frey 200.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Servicios disponibles</div>
+      <div class="card">
+        <ul class="plain">
+          <li>Limpieza extra con cambio de toallones y/o sábanas: desde la 3° noche, con cargo extra. Coordinamos por WhatsApp.</li>
+          <li>Plancha y tabla de planchar: pedila y te la llevamos.</li>
+          <li>¿Recomendaciones de actividades o traslados? Consultanos — no brindamos traslados, pero podemos orientarte.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Lo que tenés cerca</div>
+      <div class="card">
+        <div class="place">
+          <div class="name">☕ The Coffee Store</div>
+          <div class="meta">Planta baja del edificio · Lun–Vie 8–20:30 / Sáb 9–20:30</div>
+        </div>
+        <div class="place">
+          <div class="name">☕ Tante Frida</div>
+          <div class="meta">A pasos del edificio · Lun–Vie 8–21 / Sáb–Dom 9–21</div>
+        </div>
+        <div class="place">
+          <div class="name">🏋️ Zona Funcional</div>
+          <div class="meta">Ingreso por planta baja · se abona por día · Lun–Vie 8–21 / Sáb 9–13 · WhatsApp +5492944208950</div>
+        </div>
+        <div class="place">
+          <div class="name">🚗 Rent a Car Nahuel Huapi</div>
+          <div class="meta">WhatsApp +5492944539693 (Romina) · nahuelhuapirentacar.com.ar</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Contacto y emergencias</div>
+      <div class="card">
+        Para consultas o cualquier inconveniente durante tu estadía, escribinos:
+        <a class="wa" href="https://wa.me/5491138008764" target="_blank">💬 Escribir por WhatsApp</a>
+        <div class="emer">
+          <span>🚨 Policía 101</span>
+          <span>🚒 Bomberos 100</span>
+          <span>🚑 SAME 107</span>
+          <span>🆘 911</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>Esperamos que disfrutes Bariloche. ¡Cualquier cosa, estamos a un mensaje! — Equipo BRC.PATAGONIA</footer>
+  </div>
+
+  <!-- ===================== ENGLISH ===================== -->
+  <div class="lang-content" id="en">
+    <div class="greeting">Welcome! 🏔️</div>
+    <div class="sub">A few notes to make your stay easier.</div>
+
+    <section>
+      <div class="eyebrow">Check-in &amp; check-out</div>
+      <div class="card">
+        <div class="row"><b>Check-in</b><span class="val">15:00</span></div>
+        <div class="row"><b>Check-out</b><span class="val">10:00</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">WiFi</div>
+      <div class="card">
+        <div class="row"><b>Network</b><span class="val">BrcPatagonia</span></div>
+        <div class="row"><b>Password</b><span class="val">Mitre4632</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Heating — important</div>
+      <div class="alert">
+        <b>⚠️ Do not lower the thermostat below 21°C (70°F)</b>
+        The boiler is centralized and shared with the whole building. Lowering it can disrupt the system and affect other floors. If you feel warm, just open the window slightly — the room cools down quickly.
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">House rules</div>
+      <div class="card">
+        <ul class="plain">
+          <li>Smoking is strictly prohibited inside the apartment and common areas. 100% smoke-free space.</li>
+          <li>Please dispose of trash in the street bins: Frey 100 / Frey 200.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Available services</div>
+      <div class="card">
+        <ul class="plain">
+          <li>Extra cleaning with fresh towels and/or sheets: available from night 3. Just message us to arrange.</li>
+          <li>Iron and ironing board: request it and we'll bring it to you.</li>
+          <li>Need recommendations for activities or local services? Ask us — we don't provide transfers ourselves, but we're happy to point you in the right direction.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">What's nearby</div>
+      <div class="card">
+        <div class="place">
+          <div class="name">☕ The Coffee Store</div>
+          <div class="meta">Ground floor of the building · Mon–Fri 8–8:30pm / Sat 9–8:30pm</div>
+        </div>
+        <div class="place">
+          <div class="name">☕ Tante Frida</div>
+          <div class="meta">Steps from the building · Mon–Fri 8–9pm / Sat–Sun 9–9pm</div>
+        </div>
+        <div class="place">
+          <div class="name">🏋️ Zona Funcional</div>
+          <div class="meta">Access via ground floor · pay per day · Mon–Fri 8–9pm / Sat 9–1pm · WhatsApp +5492944208950</div>
+        </div>
+        <div class="place">
+          <div class="name">🚗 Rent a Car Nahuel Huapi</div>
+          <div class="meta">WhatsApp +5492944539693 (Romina) · nahuelhuapirentacar.com.ar</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Contact &amp; emergencies</div>
+      <div class="card">
+        For any question or issue during your stay, message us:
+        <a class="wa" href="https://wa.me/5491138008764" target="_blank">💬 Message us on WhatsApp</a>
+        <div class="emer">
+          <span>🚨 Police 101</span>
+          <span>🚒 Fire 100</span>
+          <span>🚑 Ambulance 107</span>
+          <span>🆘 911</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>We hope you enjoy Bariloche. We're just a message away! — BRC.PATAGONIA Team</footer>
+  </div>
+
+  <!-- ===================== PORTUGUÊS ===================== -->
+  <div class="lang-content" id="pt">
+    <div class="greeting">Bem-vindos! 🏔️</div>
+    <div class="sub">Algumas indicações para tornar sua estadia mais tranquila.</div>
+
+    <section>
+      <div class="eyebrow">Horários</div>
+      <div class="card">
+        <div class="row"><b>Check-in</b><span class="val">15:00</span></div>
+        <div class="row"><b>Check-out</b><span class="val">10:00</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">WiFi</div>
+      <div class="card">
+        <div class="row"><b>Rede</b><span class="val">BrcPatagonia</span></div>
+        <div class="row"><b>Senha</b><span class="val">Mitre4632</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Aquecimento — importante</div>
+      <div class="alert">
+        <b>⚠️ Não baixe o termostato abaixo de 21°C</b>
+        A caldeira é central e compartilhada com todo o prédio. Baixá-la pode desconfigurar o sistema e afetar outros andares. Se estiver com calor, abra um pouco a janela — o ambiente esfria rapidamente.
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Regras do espaço</div>
+      <div class="card">
+        <ul class="plain">
+          <li>É proibido fumar dentro do apartamento e nas áreas comuns. Espaço 100% livre de fumaça.</li>
+          <li>O lixo deve ser descartado nos contêineres da rua: Frey 100 / Frey 200.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Serviços disponíveis</div>
+      <div class="card">
+        <ul class="plain">
+          <li>Limpeza extra com troca de toalhas e/ou roupas de cama: a partir da 3ª noite. Combinamos pelo WhatsApp.</li>
+          <li>Ferro e tábua de passar: solicite e levamos até você.</li>
+          <li>Precisa de recomendações de atividades ou serviços locais? Consulte-nos — não fazemos traslados, mas podemos indicar as melhores opções.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">O que há por perto</div>
+      <div class="card">
+        <div class="place">
+          <div class="name">☕ The Coffee Store</div>
+          <div class="meta">Térreo do prédio · Seg–Sex 8–20:30 / Sáb 9–20:30</div>
+        </div>
+        <div class="place">
+          <div class="name">☕ Tante Frida</div>
+          <div class="meta">A poucos passos · Seg–Sex 8–21 / Sáb–Dom 9–21</div>
+        </div>
+        <div class="place">
+          <div class="name">🏋️ Zona Funcional</div>
+          <div class="meta">Acesso pelo térreo · paga-se por dia · Seg–Sex 8–21 / Sáb 9–13 · WhatsApp +5492944208950</div>
+        </div>
+        <div class="place">
+          <div class="name">🚗 Rent a Car Nahuel Huapi</div>
+          <div class="meta">WhatsApp +5492944539693 (Romina) · nahuelhuapirentacar.com.ar</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Contato e emergências</div>
+      <div class="card">
+        Para dúvidas ou qualquer problema durante sua estadia, escreva para nós:
+        <a class="wa" href="https://wa.me/5491138008764" target="_blank">💬 Falar pelo WhatsApp</a>
+        <div class="emer">
+          <span>🚨 Polícia 101</span>
+          <span>🚒 Bombeiros 100</span>
+          <span>🚑 Ambulância 107</span>
+          <span>🆘 911</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>Esperamos que aproveite Bariloche. Estamos a uma mensagem de distância! — Equipe BRC.PATAGONIA</footer>
+  </div>
+
+</div>
+
+<script>
+function setLang(lang){
+  document.querySelectorAll('.lang-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.langbtn').forEach(el=>el.classList.remove('active'));
+  document.getElementById(lang).classList.add('active');
+  document.querySelector('.langbtn[data-lang="'+lang+'"]').classList.add('active');
+  document.documentElement.lang = lang;
+}
+</script>
+
+</body>
+</html>
